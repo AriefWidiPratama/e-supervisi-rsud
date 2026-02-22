@@ -11,8 +11,12 @@ class Education extends Model
     protected $fillable = [
         'user_id',
         'patient_id',
-        'diet_score',
-        'activity_score',
+        'topic_diet',
+        'topic_activity',
+        'topic_smoking',
+        'topic_medication',
+        'topic_stress',
+        'topic_warning_signs',
         'used_media',
     ];
 
@@ -24,7 +28,6 @@ class Education extends Model
         return $this->belongsTo(Patient::class);
     }
 
-    // Tambahkan relasi ini
     public function supervision() {
         return $this->hasOne(Supervision::class);
     }

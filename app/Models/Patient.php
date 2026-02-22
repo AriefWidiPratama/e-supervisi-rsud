@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Patient extends Model
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'patient_code',
         'medical_diagnosis',
     ];
+
+    // Tambahkan relasi ini
+    public function educations()
+    {
+        return $this->hasMany(Education::class);
+    }
 }

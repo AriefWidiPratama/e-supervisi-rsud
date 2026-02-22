@@ -6,31 +6,26 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('supervisions', function (Blueprint $table) {
             $table->id();
-            
-            // Relasi ke data edukasi yang dinilai
             $table->foreignId('education_id')->constrained('educations')->cascadeOnDelete();
-            
-            // Relasi ke tabel users (Supervisor yang menilai)
             $table->foreignId('observer_id')->constrained('users')->cascadeOnDelete(); 
             
-            // Kolom hasil penilaian supervisor
-            $table->integer('observation_score');
-            $table->text('feedback');
+            // Komponen Kuantitatif (Observasi 18 Indikator)
+            $table->json('item_scores')->nullable(); // Menyimpan rincian skor 0-1-2 tiap indikator
+            $table->integer('total_score'); // Maksimal 36
+            $table->string('evaluation_category'); // Edukasi Sangat Baik, Cukup, Kurang
+            
+            // Komponen Kualitatif (Buku Supervisi Klinis)
+            $table->text('nurse_strengths')->nullable(); // Kekuatan Perawat
+            $table->text('areas_of_improvement')->nullable(); // Area yang Perlu Ditingkatkan
             
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('supervisions');

@@ -8,14 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        .bg-gradient-supervisor {
-            background: radial-gradient(circle at top left, #f5f3ff 0%, #f8fafc 50%);
-        }
+        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .bg-gradient-supervisor { background: radial-gradient(circle at top left, #f5f3ff 0%, #f8fafc 50%); }
     </style>
 </head>
 <body class="bg-gradient-supervisor min-h-screen pb-24">
@@ -25,18 +19,15 @@
                 <h1 class="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-600 mb-1">Monitoring System</h1>
                 <p class="text-xl font-extrabold text-slate-900 tracking-tight">Supervisor Panel</p>
             </div>
-            
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="bg-slate-900 hover:bg-red-600 text-white text-[10px] font-bold px-5 py-2.5 rounded-full transition-all duration-300">
-                    LOGOUT
-                </button>
+                <button type="submit" class="bg-slate-900 hover:bg-red-600 text-white text-[10px] font-bold px-5 py-2.5 rounded-full transition-all duration-300">LOGOUT</button>
             </form>
         </div>
     </header>
 
     <main class="max-w-3xl mx-auto px-8 mt-10">
-        <div class="glass-card p-8 rounded-[2.5rem] shadow-2xl shadow-indigo-900/5 mb-10 flex items-center justify-between border-l-8 border-l-indigo-600">
+        <div class="glass-card p-8 rounded-[2.5rem] shadow-2xl shadow-indigo-900/5 mb-6 flex items-center justify-between border-l-8 border-l-indigo-600">
             <div class="flex items-center gap-6">
                 <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-xl shadow-indigo-200">
                     {{ substr(Auth::user()->name, 0, 1) }}
@@ -50,6 +41,12 @@
                 <p class="text-[10px] font-black text-slate-400 uppercase">Current Date</p>
                 <p class="font-bold text-slate-800">{{ now()->format('d M Y') }}</p>
             </div>
+        </div>
+
+        <div class="mb-8 flex justify-end">
+            <a href="{{ route('supervisor.history') }}" class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-indigo-600 bg-white px-5 py-3 rounded-full shadow-sm hover:shadow-md transition-all border border-indigo-100">
+                View History Log & RTL
+            </a>
         </div>
 
         <div class="mb-8 px-2 flex justify-between items-end">
@@ -71,6 +68,15 @@
         
         <div class="space-y-6">
             @forelse($pendingEducations ?? [] as $edu)
+                @php
+                    $topics = 0;
+                    if($edu->topic_diet) $topics++;
+                    if($edu->topic_activity) $topics++;
+                    if($edu->topic_smoking) $topics++;
+                    if($edu->topic_medication) $topics++;
+                    if($edu->topic_stress) $topics++;
+                    if($edu->topic_warning_signs) $topics++;
+                @endphp
                 <div class="glass-card p-8 rounded-[2.5rem] shadow-lg shadow-slate-200/60 hover:shadow-2xl hover:shadow-indigo-900/10 hover:-translate-y-1 transition-all duration-300 group">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
                         <div class="space-y-1 text-left flex-1">
@@ -79,43 +85,33 @@
                                 <span class="text-[9px] font-black px-2.5 py-1 bg-amber-50 text-amber-600 rounded-lg uppercase border border-amber-100 tracking-tighter">Needs Evaluation</span>
                             </div>
                             <div class="flex items-center gap-2 text-slate-400 mb-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                                 <p class="text-xs font-bold uppercase tracking-widest italic tracking-tight">Subject ID: {{ $edu->patient->patient_code }}</p>
                             </div>
                             
                             <div class="flex gap-4 items-center pt-2">
                                 <div class="flex flex-col">
-                                    <span class="text-[8px] font-black text-slate-400 uppercase">Diet Score</span>
-                                    <span class="text-xs font-bold text-slate-700">{{ $edu->diet_score }}%</span>
+                                    <span class="text-[8px] font-black text-slate-400 uppercase">Topik Edukasi</span>
+                                    <span class="text-xs font-bold text-slate-700">{{ $topics }}/6 Tersampaikan</span>
                                 </div>
                                 <div class="w-px h-4 bg-slate-200"></div>
                                 <div class="flex flex-col">
-                                    <span class="text-[8px] font-black text-slate-400 uppercase">Activity Score</span>
-                                    <span class="text-xs font-bold text-slate-700">{{ $edu->activity_score }}%</span>
+                                    <span class="text-[8px] font-black text-slate-400 uppercase">Media</span>
+                                    <span class="text-xs font-bold text-slate-700">{{ $edu->used_media }}</span>
                                 </div>
                             </div>
                         </div>
 
                         <a href="{{ route('supervisor.review', $edu->id) }}" class="w-full md:w-auto px-8 py-4 bg-indigo-600 hover:bg-slate-900 text-white font-black rounded-2xl shadow-xl shadow-indigo-100 transition-all duration-300 text-xs uppercase tracking-widest flex items-center justify-center gap-3 group-hover:scale-105">
                             Verify Report
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7-7 7" /></svg>
                         </a>
                     </div>
                 </div>
             @empty
                 <div class="text-center py-24 bg-white/40 rounded-[3rem] border-2 border-dashed border-indigo-100">
-                    <div class="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    </div>
                     <p class="text-slate-400 font-extrabold italic text-sm tracking-wide">Excellent. All reports verified.</p>
                 </div>
             @endforelse
         </div>
     </main>
-
-    <footer class="mt-24 py-10 text-center border-t border-slate-100">
-        <p class="text-[10px] text-slate-400 font-black uppercase tracking-[0.4em]">E-Supervisi Intelligence v2.0</p>
-        <p class="text-[9px] text-slate-300 mt-2 font-bold uppercase tracking-tight">Clinical Governance | Poltekkes Riau</p>
-    </footer>
 </body>
 </html>

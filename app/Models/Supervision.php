@@ -9,17 +9,27 @@ class Supervision extends Model
     protected $fillable = [
         'education_id',
         'observer_id',
-        'observation_score',
-        'feedback',
+        'item_scores',
+        'total_score',
+        'evaluation_category',
+        'nurse_strengths',
+        'areas_of_improvement',
     ];
 
-    // Relasi balik ke tabel Edukasi
+    protected $casts = [
+        'item_scores' => 'array', // Mengubah JSON dari database menjadi Array otomatis
+    ];
+
     public function education() {
         return $this->belongsTo(Education::class);
     }
 
-    // Relasi ke tabel User (untuk mengetahui siapa Supervisor yang menilai)
     public function observer() {
         return $this->belongsTo(User::class, 'observer_id');
+    }
+
+    // Relasi ke Rencana Tindak Lanjut (RTL)
+    public function followUps() {
+        return $this->hasMany(FollowUp::class);
     }
 }

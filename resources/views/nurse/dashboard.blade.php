@@ -8,14 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        .bg-gradient-main {
-            background: radial-gradient(circle at top right, #e0e7ff 0%, #f8fafc 50%);
-        }
+        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .bg-gradient-main { background: radial-gradient(circle at top right, #e0e7ff 0%, #f8fafc 50%); }
     </style>
 </head>
 <body class="bg-gradient-main min-h-screen pb-24">
@@ -25,12 +19,9 @@
                 <h1 class="text-xs font-extrabold uppercase tracking-[0.2em] text-blue-600">E-Supervisi</h1>
                 <p class="text-lg font-bold text-slate-900">Nurse Terminal</p>
             </div>
-            
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="bg-slate-900 hover:bg-red-600 text-white text-[10px] font-bold px-4 py-2 rounded-full transition-all duration-300">
-                    LOGOUT
-                </button>
+                <button type="submit" class="bg-slate-900 hover:bg-red-600 text-white text-[10px] font-bold px-4 py-2 rounded-full transition-all duration-300">LOGOUT</button>
             </form>
         </div>
     </header>
@@ -65,6 +56,9 @@
         
         <div class="grid gap-5">
             @forelse($patients ?? [] as $patient)
+                @php
+                    $latestEdu = $patient->educations->sortByDesc('created_at')->first();
+                @endphp
                 <div class="glass-card p-6 rounded-[2rem] shadow-lg shadow-slate-200/50 hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 transition-all duration-300 group">
                     <div class="flex justify-between items-start">
                         <div class="flex-1">
@@ -75,31 +69,34 @@
                             <p class="text-sm text-slate-500 font-medium leading-relaxed uppercase">Dx: {{ $patient->medical_diagnosis }}</p>
                         </div>
                         <div class="text-right">
-                            <span class="text-[9px] font-bold text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-100">PENDING REVIEW</span>
+                            @if(!$latestEdu)
+                                <span class="text-[9px] font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full border border-slate-200 uppercase tracking-widest">NEEDS EDUCATION</span>
+                            @elseif(!$latestEdu->supervision)
+                                <span class="text-[9px] font-bold text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-100 uppercase tracking-widest">PENDING REVIEW</span>
+                            @else
+                                <span class="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100 uppercase tracking-widest">VERIFIED: {{ strtoupper($latestEdu->supervision->evaluation_category) }} ({{ $latestEdu->supervision->total_score }}/36)</span>
+                            @endif
                         </div>
                     </div>
 
                     <div class="mt-6 flex items-center gap-3">
-                        <a href="{{ route('perawat.education.create', $patient->id) }}" class="flex-1 bg-slate-900 hover:bg-blue-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-slate-200 hover:shadow-blue-200 transition-all duration-300 text-sm flex items-center justify-center gap-2">
-                            Open Lifestyle Card
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
-                        </a>
+                        @if(!$latestEdu || !$latestEdu->supervision)
+                            <a href="{{ route('perawat.education.create', $patient->id) }}" class="flex-1 bg-slate-900 hover:bg-blue-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-slate-200 hover:shadow-blue-200 transition-all duration-300 text-sm flex items-center justify-center gap-2">
+                                Open Lifestyle Card
+                            </a>
+                        @else
+                            <button disabled class="flex-1 bg-slate-50 text-slate-400 font-bold py-4 rounded-2xl border-2 border-dashed border-slate-200 cursor-not-allowed text-sm flex items-center justify-center gap-2 transition-all">
+                                Supervision Completed
+                            </button>
+                        @endif
                     </div>
                 </div>
             @empty
                 <div class="text-center py-20 bg-white/40 rounded-[2rem] border-2 border-dashed border-slate-200">
-                    <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-                    </div>
                     <p class="text-slate-400 font-bold italic">No active research subjects found.</p>
                 </div>
             @endforelse
         </div>
     </main>
-
-    <footer class="mt-20 py-8 text-center border-t border-slate-200">
-        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.3em]">E-Supervisi System v2.0</p>
-        <p class="text-[9px] text-slate-300 mt-1 uppercase">Clinical Research Platform for Poltekkes Riau</p>
-    </footer>
 </body>
 </html>

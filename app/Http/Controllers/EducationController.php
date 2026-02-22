@@ -9,39 +9,35 @@ use Illuminate\Support\Facades\Auth;
 
 class EducationController extends Controller
 {
-    /**
-     * Show the education form for a specific patient.
-     */
     public function create($patient_id)
     {
-        if (!Auth::user()->hasRole('Nurse')) {
-            abort(403);
-        }
-
+        if (!Auth::user()->hasRole('Nurse')) abort(403);
         $patient = Patient::findOrFail($patient_id);
         return view('nurse.education_form', compact('patient'));
     }
 
-    /**
-     * Store the research data (Lifestyle Card).
-     */
     public function store(Request $request)
     {
+        if (!Auth::user()->hasRole('Nurse')) abort(403);
+
         $request->validate([
             'patient_id' => 'required|exists:patients,id',
-            'diet_score' => 'required|integer|min:0|max:100',
-            'activity_score' => 'required|integer|min:0|max:100',
             'used_media' => 'required|in:Digital Card,Printed Card,Combination',
         ]);
 
+        // Simpan data edukasi. has() akan bernilai true jika dicentang, false jika tidak.
         Education::create([
             'user_id' => Auth::id(),
             'patient_id' => $request->patient_id,
-            'diet_score' => $request->diet_score,
-            'activity_score' => $request->activity_score,
+            'topic_diet' => $request->has('topic_diet'),
+            'topic_activity' => $request->has('topic_activity'),
+            'topic_smoking' => $request->has('topic_smoking'),
+            'topic_medication' => $request->has('topic_medication'),
+            'topic_stress' => $request->has('topic_stress'),
+            'topic_warning_signs' => $request->has('topic_warning_signs'),
             'used_media' => $request->used_media,
         ]);
 
-        return redirect()->route('perawat.dashboard')->with('success', 'Observation data recorded successfully!');
+        return redirect()->route('perawat.dashboard')->with('success', 'Dokumentasi Edukasi Lifestyle berhasil disimpan!');
     }
 }

@@ -6,8 +6,9 @@ use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\EducationController;
 use Illuminate\Support\Facades\Route;
 
+// Langsung memantulkan pengguna ke gerbang Login
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 /**
@@ -51,6 +52,15 @@ Route::middleware(['auth'])->group(function () {
     // Feature: Clinical Review & Supervision Evaluation
     Route::get('/supervisor/review/{education_id}', [SupervisorController::class, 'review'])->name('supervisor.review');
     Route::post('/supervisor/review/store', [SupervisorController::class, 'storeReview'])->name('supervisor.review.store');
+    
+    // Feature: Supervision History Log
+    Route::get('/supervisor/history', [SupervisorController::class, 'history'])->name('supervisor.history');
+
+    // Feature: Update Status RTL
+    Route::patch('/supervisor/rtl/{id}/update', [SupervisorController::class, 'updateRtl'])->name('supervisor.rtl.update');
+    
+    // Feature: Export Data Riset ke Excel/CSV
+    Route::get('/supervisor/export', [SupervisorController::class, 'exportData'])->name('supervisor.export');
 });
 
 /**

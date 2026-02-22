@@ -17,7 +17,8 @@ class PerawatController extends Controller
             abort(403);
         }
 
-        $patients = Patient::latest()->get(); // Menampilkan pasien terbaru di atas
+        // Mengambil data pasien beserta relasi edukasi dan supervisi
+        $patients = Patient::with('educations.supervision')->latest()->get();
         
         return view('nurse.dashboard', compact('patients'));
     }
