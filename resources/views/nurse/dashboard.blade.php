@@ -42,7 +42,7 @@
             </div>
             <div>
                 <h2 class="text-xl font-extrabold text-slate-900 leading-none">Welcome, {{ Auth::user()->name }}</h2>
-                <p class="text-sm text-slate-500 mt-1 font-medium">Cardiac Care Unit (CCU)</p>
+                <p class="text-sm text-slate-500 mt-1 font-medium italic">Cardiac Care Unit (CCU)</p>
             </div>
         </div>
 
@@ -72,7 +72,7 @@
                                 <span class="text-[10px] font-black uppercase tracking-tighter text-blue-500 bg-blue-50 px-2 py-0.5 rounded-md italic">Inpatient</span>
                                 <h4 class="text-lg font-extrabold text-slate-800 tracking-tight">ID: {{ $patient->patient_code }}</h4>
                             </div>
-                            <p class="text-sm text-slate-500 font-medium leading-relaxed">Dx: {{ $patient->medical_diagnosis }}</p>
+                            <p class="text-sm text-slate-500 font-medium leading-relaxed uppercase">Dx: {{ $patient->medical_diagnosis }}</p>
                         </div>
                         <div class="text-right">
                             <span class="text-[9px] font-bold text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-100">PENDING REVIEW</span>
@@ -80,10 +80,10 @@
                     </div>
 
                     <div class="mt-6 flex items-center gap-3">
-                        <button class="flex-1 bg-slate-900 group-hover:bg-blue-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-slate-200 group-hover:shadow-blue-200 transition-all duration-300 text-sm flex items-center justify-center gap-2">
+                        <a href="{{ route('perawat.education.create', $patient->id) }}" class="flex-1 bg-slate-900 hover:bg-blue-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-slate-200 hover:shadow-blue-200 transition-all duration-300 text-sm flex items-center justify-center gap-2">
                             Open Lifestyle Card
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
-                        </button>
+                        </a>
                     </div>
                 </div>
             @empty

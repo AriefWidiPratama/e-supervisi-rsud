@@ -6,16 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Education extends Model
 {
-    // Tambahkan baris ini untuk memberitahu nama tabel yang benar
     protected $table = 'educations';
 
     protected $fillable = [
-        'user_id', 
-        'patient_id', 
-        'diet_score', 
-        'activity_score', 
-        'used_media', 
-        'status'
+        'user_id',
+        'patient_id',
+        'diet_score',
+        'activity_score',
+        'used_media',
     ];
 
     public function user() {
@@ -24,5 +22,10 @@ class Education extends Model
 
     public function patient() {
         return $this->belongsTo(Patient::class);
+    }
+
+    // Tambahkan relasi ini
+    public function supervision() {
+        return $this->hasOne(Supervision::class);
     }
 }

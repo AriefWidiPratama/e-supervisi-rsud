@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PerawatController;
 use App\Http\Controllers\SupervisorController;
+use App\Http\Controllers\EducationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -11,6 +12,7 @@ Route::get('/', function () {
 
 /**
  * Gateway to determine redirect path after login based on User Role.
+ * This ensures Nurses and Supervisors land on their respective professional dashboards.
  */
 Route::get('/dashboard', function () {
     if (auth()->user()->hasRole('Nurse')) {
@@ -23,26 +25,32 @@ Route::get('/dashboard', function () {
 
 /**
  * Routes for Nurse Role.
- * Includes Dashboard, Patient Registration, and Data Storage.
+ * Handles patient registration and the Digital Lifestyle Card instrument.
  */
 Route::middleware(['auth'])->group(function () {
-    // Main Dashboard for Nurse
+    // Main Dashboard for Nurses
     Route::get('/perawat/dashboard', [PerawatController::class, 'index'])->name('perawat.dashboard');
     
-    // Feature: Add New Patient (Research Subject)
+    // Feature: Research Subject (Patient) Management
     Route::get('/perawat/patient/add', [PerawatController::class, 'create'])->name('perawat.patient.add');
-    
-    // Action: Store Patient Data to Database
     Route::post('/perawat/patient/store', [PerawatController::class, 'store'])->name('perawat.patient.store');
+
+    // Feature: Digital Lifestyle Card Data Entry
+    Route::get('/perawat/education/{patient_id}', [EducationController::class, 'create'])->name('perawat.education.create');
+    Route::post('/perawat/education/store', [EducationController::class, 'store'])->name('perawat.education.store');
 });
 
 /**
  * Routes for Supervisor Role.
- * Includes Monitoring and Reviewing Nurse Activities.
+ * Focuses on clinical oversight and nurse performance evaluation.
  */
 Route::middleware(['auth'])->group(function () {
-    // Main Dashboard for Supervisor
+    // Main Dashboard for Supervisors
     Route::get('/supervisor/dashboard', [SupervisorController::class, 'index'])->name('supervisor.dashboard');
+
+    // Feature: Clinical Review & Supervision Evaluation
+    Route::get('/supervisor/review/{education_id}', [SupervisorController::class, 'review'])->name('supervisor.review');
+    Route::post('/supervisor/review/store', [SupervisorController::class, 'storeReview'])->name('supervisor.review.store');
 });
 
 /**

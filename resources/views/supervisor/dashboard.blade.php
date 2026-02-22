@@ -61,26 +61,45 @@
                 <span class="text-[10px] font-bold text-slate-400 uppercase">Total Tasks: {{ count($pendingEducations ?? []) }}</span>
             </div>
         </div>
+
+        @if(session('success'))
+            <div class="mb-6 p-4 bg-emerald-50 border border-emerald-100 text-emerald-700 text-sm font-semibold rounded-2xl flex items-center gap-3 animate-pulse">
+                <div class="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                {{ session('success') }}
+            </div>
+        @endif
         
         <div class="space-y-6">
             @forelse($pendingEducations ?? [] as $edu)
                 <div class="glass-card p-8 rounded-[2.5rem] shadow-lg shadow-slate-200/60 hover:shadow-2xl hover:shadow-indigo-900/10 hover:-translate-y-1 transition-all duration-300 group">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                        <div class="space-y-1 text-left">
+                        <div class="space-y-1 text-left flex-1">
                             <div class="flex items-center gap-3">
                                 <h4 class="text-lg font-extrabold text-slate-900 tracking-tight">Nurse: {{ $edu->user->name }}</h4>
                                 <span class="text-[9px] font-black px-2.5 py-1 bg-amber-50 text-amber-600 rounded-lg uppercase border border-amber-100 tracking-tighter">Needs Evaluation</span>
                             </div>
-                            <div class="flex items-center gap-2 text-slate-400">
+                            <div class="flex items-center gap-2 text-slate-400 mb-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                                <p class="text-xs font-bold uppercase tracking-widest italic">Subject ID: {{ $edu->patient->patient_code }}</p>
+                                <p class="text-xs font-bold uppercase tracking-widest italic tracking-tight">Subject ID: {{ $edu->patient->patient_code }}</p>
+                            </div>
+                            
+                            <div class="flex gap-4 items-center pt-2">
+                                <div class="flex flex-col">
+                                    <span class="text-[8px] font-black text-slate-400 uppercase">Diet Score</span>
+                                    <span class="text-xs font-bold text-slate-700">{{ $edu->diet_score }}%</span>
+                                </div>
+                                <div class="w-px h-4 bg-slate-200"></div>
+                                <div class="flex flex-col">
+                                    <span class="text-[8px] font-black text-slate-400 uppercase">Activity Score</span>
+                                    <span class="text-xs font-bold text-slate-700">{{ $edu->activity_score }}%</span>
+                                </div>
                             </div>
                         </div>
 
-                        <button class="w-full md:w-auto px-8 py-4 bg-indigo-600 hover:bg-slate-900 text-white font-black rounded-2xl shadow-xl shadow-indigo-100 transition-all duration-300 text-xs uppercase tracking-widest flex items-center justify-center gap-3 group-hover:scale-105">
+                        <a href="{{ route('supervisor.review', $edu->id) }}" class="w-full md:w-auto px-8 py-4 bg-indigo-600 hover:bg-slate-900 text-white font-black rounded-2xl shadow-xl shadow-indigo-100 transition-all duration-300 text-xs uppercase tracking-widest flex items-center justify-center gap-3 group-hover:scale-105">
                             Verify Report
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7-7 7" /></svg>
-                        </button>
+                        </a>
                     </div>
                 </div>
             @empty
@@ -96,7 +115,7 @@
 
     <footer class="mt-24 py-10 text-center border-t border-slate-100">
         <p class="text-[10px] text-slate-400 font-black uppercase tracking-[0.4em]">E-Supervisi Intelligence v2.0</p>
-        <p class="text-[9px] text-slate-300 mt-2 font-bold uppercase">Clinical Governance | Poltekkes Riau</p>
+        <p class="text-[9px] text-slate-300 mt-2 font-bold uppercase tracking-tight">Clinical Governance | Poltekkes Riau</p>
     </footer>
 </body>
 </html>
