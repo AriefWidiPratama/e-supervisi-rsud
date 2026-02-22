@@ -15,11 +15,25 @@
 <body class="bg-gradient-history min-h-screen p-6">
     <main class="max-w-7xl mx-auto">
         
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         @if(session('success'))
-            <div class="mb-4 p-4 bg-emerald-50 border border-emerald-100 text-emerald-700 text-sm font-semibold rounded-2xl flex items-center gap-3 animate-pulse">
-                <div class="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                {{ session('success') }}
-            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: "{{ session('success') }}",
+                        showConfirmButton: false,
+                        timer: 2500,
+                        backdrop: `rgba(15, 23, 42, 0.4)`,
+                        customClass: {
+                            popup: 'rounded-[2rem] shadow-2xl border border-white/20',
+                            title: 'font-black text-2xl text-slate-800 tracking-tight',
+                            htmlContainer: 'text-sm font-bold text-slate-500'
+                        }
+                    });
+                });
+            </script>
         @endif
 
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
