@@ -3,111 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Portal | E-Supervisi</title>
+    <title>Login | E-Supervisi RSUD Arifin Ahmad</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .bg-premium {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+        .bg-premium-white { 
+            background-color: #ffffff;
+            background-image: radial-gradient(#e0e7ff 1px, transparent 1px);
+            background-size: 24px 24px;
         }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .input-glass {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-        .input-glass::placeholder { color: rgba(255, 255, 255, 0.3); }
-        .input-glass:focus {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: #60a5fa;
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.15);
+        .bg-accent-gradient {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
         }
     </style>
 </head>
-<body class="bg-premium min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
-    
-    <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-        <div class="absolute -top-[20%] -right-[10%] w-[50%] h-[50%] rounded-full bg-blue-500/20 blur-[120px]"></div>
-        <div class="absolute bottom-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-indigo-500/20 blur-[100px]"></div>
-    </div>
+<body class="bg-premium-white min-h-screen flex items-center justify-center p-6">
 
-    <div class="relative z-10 w-full max-w-5xl grid md:grid-cols-2 gap-0 overflow-hidden rounded-[3rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10 glass-panel">
+    <div class="bg-white rounded-[2.5rem] shadow-2xl shadow-blue-900/5 border border-slate-100 overflow-hidden max-w-5xl w-full flex flex-col md:flex-row">
         
-        <div class="hidden md:flex flex-col justify-between p-16 bg-gradient-to-br from-blue-600/10 to-indigo-900/30 border-r border-white/5 relative">
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-indigo-500"></div>
-            <div>
-                <div class="inline-block px-4 py-1.5 rounded-full border border-blue-400/30 bg-blue-400/10 text-[10px] font-black uppercase tracking-[0.3em] text-blue-300 mb-6">
-                    System v2.0
-                </div>
-                <h1 class="text-5xl font-black text-white leading-tight tracking-tight mb-4">
-                    Clinical <br>
-                    Supervision <br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">Platform.</span>
+        <div class="bg-accent-gradient p-10 md:p-16 md:w-5/12 flex flex-col justify-between relative overflow-hidden">
+            <div class="absolute top-0 right-0 -mt-16 -mr-16 text-blue-600/5 animate-pulse">
+                <svg width="300" height="300" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+            </div>
+            
+            <div class="relative z-10 pt-4">
+                <h1 class="text-3xl md:text-4xl font-extrabold text-blue-900 leading-tight tracking-tight mb-4">
+                    Sistem <br>E-Supervisi <br><span class="text-blue-600">Perawat.</span>
                 </h1>
-                <p class="text-slate-400 text-sm font-medium leading-relaxed max-w-xs mt-6">
-                    Gerbang otentikasi aman untuk Terminal Perawat dan Panel Eksekutif Supervisor.
+                <p class="text-blue-800/80 text-sm font-medium leading-relaxed">
+                    Platform pencatatan dan monitoring evaluasi edukasi pasien untuk pelayanan keperawatan di RSUD Arifin Ahmad.
                 </p>
             </div>
             
-            <div class="flex items-center gap-4 text-xs text-slate-500 font-bold uppercase tracking-widest">
-                <span>Poltekkes Riau</span>
-                <div class="w-1.5 h-1.5 rounded-full bg-slate-600"></div>
-                <span>Research Data</span>
+            <div class="relative z-10 mt-12 flex items-center gap-3 text-xs font-bold text-blue-600/60 uppercase tracking-widest">
+                <span>RSUD Arifin Ahmad</span>
+                <span class="w-1 h-1 bg-blue-400 rounded-full"></span>
+                <span>Pekanbaru</span>
             </div>
         </div>
 
-        <div class="p-10 md:p-16 flex flex-col justify-center bg-white/5">
-            <div class="mb-10 md:hidden">
-                <h1 class="text-3xl font-black text-white tracking-tight">E-Supervisi</h1>
-                <p class="text-blue-300 text-xs font-bold uppercase tracking-widest mt-1">Poltekkes Riau</p>
-            </div>
-
+        <div class="p-10 md:p-16 md:w-7/12 flex flex-col justify-center bg-white">
             <div class="mb-10">
-                <h2 class="text-2xl font-black text-white mb-2">Welcome Back</h2>
-                <p class="text-slate-400 text-sm font-medium">Please enter your credentials to access the system.</p>
+                <h2 class="text-2xl font-extrabold text-slate-900">Selamat Datang</h2>
+                <p class="text-slate-500 text-sm mt-2 font-medium">Silakan masuk menggunakan akun yang telah terdaftar.</p>
             </div>
-
-            <x-auth-session-status class="mb-4" :status="session('status')" />
 
             <form method="POST" action="{{ route('login') }}" class="space-y-6">
                 @csrf
 
                 <div>
-                    <label for="email" class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 ml-1">Email Address</label>
-                    <input id="email" class="block w-full input-glass p-4 rounded-2xl font-bold transition-all" 
-                           type="email" name="email" :value="old('email')" required autofocus autocomplete="username" 
-                           placeholder="e.g. perawat@rsud.com">
-                    <x-input-error :messages="$errors->get('email')" class="mt-2 text-red-400 text-[10px] font-bold uppercase ml-1" />
+                    <label for="email" class="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">Email Address</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" /></svg>
+                        </div>
+                        <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username" 
+                            class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-bold text-slate-800 text-sm placeholder:font-medium placeholder:text-slate-400" 
+                            placeholder="nama@rsud.com">
+                    </div>
+                    @error('email')
+                        <p class="text-red-500 text-xs mt-2 font-bold">{{ $message }}</p>
+                    @enderror
                 </div>
 
-                <div>
-                    <label for="password" class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 ml-1">Password</label>
-                    <input id="password" class="block w-full input-glass p-4 rounded-2xl font-bold transition-all"
-                           type="password" name="password" required autocomplete="current-password"
-                           placeholder="••••••••">
-                    <x-input-error :messages="$errors->get('password')" class="mt-2 text-red-400 text-[10px] font-bold uppercase ml-1" />
+                <div class="mt-4">
+                    <label for="password" class="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                        </div>
+                        <input id="password" type="password" name="password" required autocomplete="current-password" 
+                            class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-bold text-slate-800 text-sm placeholder:font-medium placeholder:text-slate-400" 
+                            placeholder="••••••••">
+                    </div>
+                    @error('password')
+                        <p class="text-red-500 text-xs mt-2 font-bold">{{ $message }}</p>
+                    @enderror
                 </div>
 
-                <div class="flex items-center justify-between mt-4">
-                    <label for="remember_me" class="inline-flex items-center group cursor-pointer">
-                        <input id="remember_me" type="checkbox" class="rounded bg-white/10 border-white/20 text-blue-500 focus:ring-blue-500/50" name="remember">
-                        <span class="ms-2 text-xs font-bold text-slate-400 group-hover:text-slate-200 transition-colors uppercase tracking-wider">Remember me</span>
+                <div class="flex items-center mt-4">
+                    <label for="remember_me" class="inline-flex items-center cursor-pointer">
+                        <input id="remember_me" type="checkbox" class="rounded border-slate-300 text-blue-600 shadow-sm focus:ring-blue-500" name="remember">
+                        <span class="ml-2 text-sm font-bold text-slate-500">Ingat Saya</span>
                     </label>
                 </div>
 
-                <div class="pt-4">
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-5 rounded-2xl shadow-[0_0_30px_rgba(37,99,235,0.2)] hover:shadow-[0_0_40px_rgba(37,99,235,0.4)] hover:-translate-y-1 transition-all duration-300 text-sm uppercase tracking-[0.2em]">
-                        Authenticate
-                    </button>
-                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-xl shadow-lg shadow-blue-600/20 transition-all duration-300 text-sm uppercase tracking-[0.2em] hover:-translate-y-0.5 mt-2">
+                    LOGIN SISTEM
+                </button>
             </form>
         </div>
     </div>
+
 </body>
 </html>
