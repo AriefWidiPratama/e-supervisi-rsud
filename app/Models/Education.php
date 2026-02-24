@@ -17,7 +17,12 @@ class Education extends Model
         'topic_medication',
         'topic_stress',
         'topic_warning_signs',
+        'detailed_checklists', // Tambahkan ini
         'used_media',
+    ];
+
+    protected $casts = [
+        'detailed_checklists' => 'array', // Konversi otomatis JSON ke Array
     ];
 
     public function user() {

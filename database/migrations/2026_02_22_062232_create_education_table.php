@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('patient_id')->constrained('patients')->cascadeOnDelete();
             
-            // 6 Topik Checklist Digital Lifestyle Card (Sesuai Proposal TKT 3)
+            // 6 Topik Utama Edukasi
             $table->boolean('topic_diet')->default(false);
             $table->boolean('topic_activity')->default(false);
             $table->boolean('topic_smoking')->default(false);
@@ -21,7 +21,10 @@ return new class extends Migration
             $table->boolean('topic_stress')->default(false);
             $table->boolean('topic_warning_signs')->default(false);
             
-            $table->string('used_media'); // Digital Card, Printed Card, Kombinasi
+            // Kolom baru untuk merekam rincian checklist edukasi
+            $table->json('detailed_checklists')->nullable(); 
+            
+            $table->string('used_media'); 
             $table->timestamps();
         });
     }

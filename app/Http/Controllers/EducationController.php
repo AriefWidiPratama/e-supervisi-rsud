@@ -13,7 +13,11 @@ class EducationController extends Controller
     {
         if (!Auth::user()->hasRole('Nurse')) abort(403);
         $patient = Patient::findOrFail($patient_id);
-        return view('nurse.education_form', compact('patient'));
+        
+        // Panggil data edukasi yang sudah ada jika belum disupervisi
+        $education = Education::where('patient_id', $patient_id)->whereDoesntHave('supervision')->latest()->first();
+        
+        return view('nurse.education_form', compact('patient', 'education'));
     }
 
     public function store(Request $request)
@@ -25,19 +29,29 @@ class EducationController extends Controller
             'used_media' => 'required|in:Digital Card,Printed Card,Combination',
         ]);
 
-        // Simpan data edukasi. has() akan bernilai true jika dicentang, false jika tidak.
-        Education::create([
+        $details = $request->input('details', []);
+
+        $data = [
             'user_id' => Auth::id(),
             'patient_id' => $request->patient_id,
-            'topic_diet' => $request->has('topic_diet'),
-            'topic_activity' => $request->has('topic_activity'),
-            'topic_smoking' => $request->has('topic_smoking'),
-            'topic_medication' => $request->has('topic_medication'),
-            'topic_stress' => $request->has('topic_stress'),
-            'topic_warning_signs' => $request->has('topic_warning_signs'),
+            'topic_diet' => $request->has('topic_diet') || count(array_intersect($details, ['Kurangi garam', 'Batasi gorengan', 'Perbanyak sayur & buah'])) > 0,
+            'topic_activity' => $request->has('topic_activity') || count(array_intersect($details, ['Anjuran aktivitas', 'Batas aman aktivitas'])) > 0,
+            'topic_smoking' => $request->has('topic_smoking') || count(array_intersect($details, ['Edukasi berhenti merokok', 'Edukasi hindari asap rokok'])) > 0,
+            'topic_medication' => $request->has('topic_medication') || count(array_intersect($details, ['Waktu minum obat', 'Kepatuhan obat'])) > 0,
+            'topic_stress' => $request->has('topic_stress') || count(array_intersect($details, ['Istirahat cukup', 'Relaksasi/ibadah'])) > 0,
+            'topic_warning_signs' => $request->has('topic_warning_signs') || count(array_intersect($details, ['Nyeri dada', 'Sesak napas', 'Pusing berat'])) > 0,
+            'detailed_checklists' => $details,
             'used_media' => $request->used_media,
-        ]);
+        ];
 
-        return redirect()->route('perawat.dashboard')->with('success', 'Dokumentasi Edukasi Lifestyle berhasil disimpan!');
+        // LOGIKA BARU: Jika data sudah ada, Update. Jika belum, Create baru.
+        $education = Education::where('patient_id', $request->patient_id)->whereDoesntHave('supervision')->latest()->first();
+        if ($education) {
+            $education->update($data);
+        } else {
+            Education::create($data);
+        }
+
+        return redirect()->route('perawat.dashboard')->with('success', 'Dokumentasi Edukasi berhasil diperbarui dan disimpan!');
     }
 }

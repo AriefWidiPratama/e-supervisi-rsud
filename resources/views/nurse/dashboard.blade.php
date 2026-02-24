@@ -52,17 +52,9 @@
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: "{{ session('success') }}",
-                        showConfirmButton: false,
-                        timer: 2500,
-                        backdrop: `rgba(15, 23, 42, 0.4)`,
-                        customClass: {
-                            popup: 'rounded-[2rem] shadow-2xl border border-white/20',
-                            title: 'font-black text-2xl text-slate-800 tracking-tight',
-                            htmlContainer: 'text-sm font-bold text-slate-500'
-                        }
+                        icon: 'success', title: 'Berhasil!', text: "{{ session('success') }}",
+                        showConfirmButton: false, timer: 2500, backdrop: `rgba(15, 23, 42, 0.4)`,
+                        customClass: { popup: 'rounded-[2rem] shadow-2xl', title: 'font-black text-2xl text-slate-800' }
                     });
                 });
             </script>
@@ -72,23 +64,36 @@
             @forelse($patients ?? [] as $patient)
                 @php
                     $latestEdu = $patient->educations->sortByDesc('created_at')->first();
+                    // LOGIKA BARU: Tampilkan Inisial Utuh (Tidak dipotong)
+                    $displayInitial = strtoupper($patient->patient_code);
                 @endphp
                 <div class="glass-card p-6 rounded-[2rem] shadow-lg shadow-slate-200/50 hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 transition-all duration-300 group">
                     <div class="flex justify-between items-start">
                         <div class="flex-1">
                             <div class="flex items-center gap-3 mb-1">
                                 <span class="text-[10px] font-black uppercase tracking-tighter text-blue-500 bg-blue-50 px-2 py-0.5 rounded-md italic">Inpatient</span>
-                                <h4 class="text-lg font-extrabold text-slate-800 tracking-tight">ID: {{ $patient->patient_code }}</h4>
+                                <h4 class="text-lg font-extrabold text-slate-800 tracking-tight">Nama Pasien: {{ $displayInitial }}</h4>
                             </div>
-                            <p class="text-sm text-slate-500 font-medium leading-relaxed uppercase">Dx: {{ $patient->medical_diagnosis }}</p>
+                            <p class="text-sm text-slate-500 font-medium leading-relaxed uppercase">Diagnosa Medis: {{ $patient->medical_diagnosis }}</p>
                         </div>
-                        <div class="text-right">
+                        
+                        <div class="text-right flex flex-col items-end gap-3">
                             @if(!$latestEdu)
                                 <span class="text-[9px] font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full border border-slate-200 uppercase tracking-widest">NEEDS EDUCATION</span>
                             @elseif(!$latestEdu->supervision)
                                 <span class="text-[9px] font-bold text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-100 uppercase tracking-widest">PENDING REVIEW</span>
                             @else
-                                <span class="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100 uppercase tracking-widest">VERIFIED: {{ strtoupper($latestEdu->supervision->evaluation_category) }} ({{ $latestEdu->supervision->total_score }}/36)</span>
+                                <span class="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100 uppercase tracking-widest">VERIFIED: {{ strtoupper($latestEdu->supervision->evaluation_category) }}</span>
+                            @endif
+
+                            @if(!$latestEdu || !$latestEdu->supervision)
+                            <form action="{{ route('perawat.patient.destroy', $patient->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data pasien ini?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-slate-300 hover:text-red-500 transition-colors" title="Hapus Pasien">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                </button>
+                            </form>
                             @endif
                         </div>
                     </div>
@@ -96,7 +101,7 @@
                     <div class="mt-6 flex items-center gap-3">
                         @if(!$latestEdu || !$latestEdu->supervision)
                             <a href="{{ route('perawat.education.create', $patient->id) }}" class="flex-1 bg-slate-900 hover:bg-blue-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-slate-200 hover:shadow-blue-200 transition-all duration-300 text-sm flex items-center justify-center gap-2">
-                                Open Lifestyle Card
+                                {{ $latestEdu ? 'Lanjutkan Isi Lifestyle Card' : 'Open Lifestyle Card' }}
                             </a>
                         @else
                             <button disabled class="flex-1 bg-slate-50 text-slate-400 font-bold py-4 rounded-2xl border-2 border-dashed border-slate-200 cursor-not-allowed text-sm flex items-center justify-center gap-2 transition-all">
@@ -107,7 +112,7 @@
                 </div>
             @empty
                 <div class="text-center py-20 bg-white/40 rounded-[2rem] border-2 border-dashed border-slate-200">
-                    <p class="text-slate-400 font-bold italic">No active research subjects found.</p>
+                    <p class="text-slate-400 font-bold italic">Belum ada pasien terdaftar.</p>
                 </div>
             @endforelse
         </div>
