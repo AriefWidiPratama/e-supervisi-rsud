@@ -46,6 +46,16 @@ class SupervisorController extends Controller
         ));
     }
 
+    public function pendingEvaluations()
+    {
+        if (!Auth::user()->hasRole('Supervisor')) abort(403);
+        
+        // Mengambil data edukasi yang belum disupervisi
+        $pendingEducations = \App\Models\Education::whereDoesntHave('supervision')->with(['patient', 'user'])->get();
+        
+        return view('supervisor.pending_evaluations', compact('pendingEducations'));
+    }
+    
     public function review($education_id)
     {
         if (!Auth::user()->hasRole('Supervisor')) abort(403);

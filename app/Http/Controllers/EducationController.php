@@ -54,4 +54,23 @@ class EducationController extends Controller
 
         return redirect()->route('perawat.dashboard')->with('success', 'Dokumentasi Edukasi berhasil diperbarui dan disimpan!');
     }
+
+    // ==========================================
+    // FITUR CETAK KARTU EDUKASI
+    // ==========================================
+    
+    // 1. Cetak Blanko Kosong (Dari Dashboard Utama)
+    public function printBlank()
+    {
+        if (!Auth::user()->hasRole('Nurse')) abort(403);
+        return view('nurse.print_blank');
+    }
+
+    // 2. Cetak Kartu Sesuai Data Digital Pasien
+    public function printCard($education_id)
+    {
+        if (!Auth::user()->hasRole('Nurse')) abort(403);
+        $education = Education::with(['patient', 'user'])->findOrFail($education_id);
+        return view('nurse.print_card', compact('education'));
+    }
 }

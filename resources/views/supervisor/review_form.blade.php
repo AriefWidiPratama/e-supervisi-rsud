@@ -1,129 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clinical Review | E-Supervisi Kardiologi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Feedback Supervisi | E-Supervisi Klinik</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
-        .glass-card { background: #ffffff; border: 1px solid #e2e8f0; }
-        /* Kustomisasi Radio Button Tema Rose */
-        .score-radio:checked + label {
-            background-color: #e11d48; /* Rose 600 */
-            color: white;
-            border-color: #e11d48;
-            box-shadow: 0 4px 10px rgba(225, 29, 72, 0.3);
-        }
+        body { font-family: 'Roboto', sans-serif; background-color: #e2e8f0; }
+        .header-blue { background: linear-gradient(90deg, #0056b3 0%, #0072ff 100%); }
+        /* Style radio button native */
+        .radio-score:checked + label { background-color: #0056b3; color: white; border-color: #0056b3; }
     </style>
 </head>
-<body class="min-h-screen pb-20 p-4 md:p-8">
-    <main class="max-w-4xl mx-auto">
-        <header class="mb-8 flex justify-between items-end">
-            <div>
-                <a href="{{ route('supervisor.dashboard') }}" class="inline-flex items-center gap-2 text-slate-400 hover:text-rose-600 transition-colors mb-3 font-bold text-xs uppercase tracking-widest">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-                    Kembali ke Panel
+<body class="flex justify-center min-h-screen">
+
+    <div class="w-full max-w-md bg-gray-50 min-h-screen shadow-2xl flex flex-col relative">
+        
+        <header class="header-blue text-white px-4 py-4 flex justify-between items-center shadow-md relative z-20">
+            <div class="flex items-center gap-4">
+                <a href="{{ route('supervisor.dashboard') }}" class="hover:bg-white/20 p-1 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
                 </a>
-                <h1 class="text-3xl font-black text-slate-900 leading-tight tracking-tight">Observasi Edukasi</h1>
-                <p class="text-sm text-slate-500 font-medium mt-1">Instrumen Penilaian Kinerja Perawat Berbasis Praktik Bukti</p>
+                <h1 class="text-lg font-bold">Feedback Supervisi</h1>
             </div>
-            <div class="text-right hidden md:block">
-                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 bg-white px-3 py-1 rounded-full border border-slate-200">FORM 02-OBS</p>
-            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
         </header>
 
-        <div class="glass-card p-6 md:p-8 rounded-[2rem] shadow-sm mb-8 border-l-4 border-l-slate-800">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Perawat Pelaksana</p>
-                    <p class="text-xl font-extrabold text-slate-900">{{ $education->user->name }}</p>
-                    <div class="mt-4 flex gap-4">
-                        <div>
-                            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Inisial Pasien</p>
-                            <p class="font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded mt-1">{{ strtoupper($education->patient->patient_code) }}</p>
-                        </div>
-                        <div>
-                            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Media Edukasi</p>
-                            <p class="font-bold text-slate-700 mt-1">{{ $education->used_media }}</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Materi yang Disampaikan (Self-Report)</p>
-                    <div class="flex flex-wrap gap-2">
-                        @if($education->topic_diet) <span class="text-[10px] font-bold bg-white px-2 py-1 rounded border shadow-sm">🥗 Diet</span> @endif
-                        @if($education->topic_activity) <span class="text-[10px] font-bold bg-white px-2 py-1 rounded border shadow-sm">🏃 Aktivitas</span> @endif
-                        @if($education->topic_smoking) <span class="text-[10px] font-bold bg-white px-2 py-1 rounded border shadow-sm">🚭 Rokok</span> @endif
-                        @if($education->topic_medication) <span class="text-[10px] font-bold bg-white px-2 py-1 rounded border shadow-sm">💊 Obat</span> @endif
-                        @if($education->topic_stress) <span class="text-[10px] font-bold bg-white px-2 py-1 rounded border shadow-sm">😌 Stres</span> @endif
-                        @if($education->topic_warning_signs) <span class="text-[10px] font-bold bg-white px-2 py-1 rounded border shadow-sm">⚠️ Bahaya</span> @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <form action="{{ route('supervisor.review.store') }}" method="POST" class="space-y-8">
+        <form action="{{ route('supervisor.review.store') }}" method="POST" class="flex-1 flex flex-col overflow-hidden">
             @csrf
             <input type="hidden" name="education_id" value="{{ $education->id }}">
 
-            <div class="glass-card p-6 md:p-8 rounded-[2rem] shadow-sm border-t-4 border-t-rose-500">
-                <div class="mb-6 border-b border-slate-100 pb-4">
-                    <h2 class="text-xl font-black text-slate-900 tracking-tight">A. Penilaian Observasi</h2>
-                    <p class="text-xs text-slate-500 font-medium mt-1">Pilih skor: <span class="font-bold text-slate-700 bg-slate-100 px-1 rounded">0</span> (Tidak), <span class="font-bold text-slate-700 bg-slate-100 px-1 rounded">1</span> (Sebagian/Kurang Tepat), <span class="font-bold text-slate-700 bg-slate-100 px-1 rounded">2</span> (Baik & Benar)</p>
+            <main class="flex-1 overflow-y-auto p-5 pb-24 space-y-6">
+                
+                <div class="bg-white p-4 rounded shadow-sm border border-gray-200">
+                    <p class="text-xs text-gray-500 font-bold mb-1">Nama Perawat:</p>
+                    <p class="text-sm font-bold text-blue-900 mb-3">{{ $education->user->name }}</p>
+                    <p class="text-xs text-gray-500 font-bold mb-1">Pasien & Media:</p>
+                    <p class="text-sm font-bold text-gray-800">{{ strtoupper($education->patient->patient_code) }} - {{ $education->used_media }}</p>
                 </div>
 
-                @php
-                $indikator_observasi = [
-                    '1. Persiapan Edukasi' => [
-                        'Perawat menyiapkan materi edukasi sesuai kondisi pasien',
-                        'Perawat menggunakan media edukasi (kartu lifestyle/aplikasi)',
-                        'Perawat menciptakan suasana nyaman (privasi & waktu)'
-                    ],
-                    '2. Proses Penyampaian Edukasi' => [
-                        'Menjelaskan penyakit jantung secara sederhana & jelas',
-                        'Menjelaskan faktor risiko & penyebab penyakit',
-                        'Menjelaskan modifikasi gaya hidup (diet, aktivitas, stres)',
-                        'Menjelaskan kepatuhan minum obat',
-                        'Menjelaskan tanda dan gejala bahaya'
-                    ],
-                    '3. Interaksi & Komunikasi' => [
-                        'Bahasa yang digunakan mudah dipahami pasien',
-                        'Memberi kesempatan pasien/keluarga bertanya',
-                        'Menjawab pertanyaan pasien dengan tepat',
-                        'Menggunakan pendekatan empatik & sopan'
-                    ],
-                    '4. Evaluasi Pemahaman Pasien' => [
-                        'Meminta pasien mengulang informasi penting',
-                        'Mengklarifikasi pemahaman pasien',
-                        'Memberikan penguatan ulang bila pasien belum paham'
-                    ],
-                    '5. Penutup & Dokumentasi' => [
-                        'Menyimpulkan poin utama edukasi',
-                        'Menganjurkan penerapan edukasi setelah pulang',
-                        'Mendokumentasikan edukasi dalam catatan keperawatan'
-                    ]
-                ];
-                $index = 0;
-                @endphp
+                <div>
+                    <h3 class="font-bold text-blue-900 border-b-2 border-blue-100 pb-2 mb-4">Penilaian Observasi</h3>
+                    
+                    @php
+                    $indikator = [
+                        'Persiapan Edukasi' => ['Menyiapkan materi', 'Menggunakan media', 'Menciptakan suasana nyaman'],
+                        'Penyampaian' => ['Menjelaskan penyakit', 'Menjelaskan risiko', 'Modifikasi gaya hidup', 'Kepatuhan obat', 'Tanda bahaya']
+                    ];
+                    $index = 0;
+                    @endphp
 
-                <div class="space-y-8">
-                    @foreach($indikator_observasi as $fase => $pertanyaan_list)
-                    <div>
-                        <h3 class="text-sm font-black text-rose-600 uppercase tracking-widest bg-rose-50 inline-block px-3 py-1 rounded-md mb-4">{{ $fase }}</h3>
+                    @foreach($indikator as $kategori => $pertanyaan_list)
+                    <div class="mb-5">
+                        <p class="text-xs font-bold text-gray-500 mb-3 bg-gray-100 px-2 py-1 inline-block rounded">{{ $kategori }}</p>
                         <div class="space-y-3">
                             @foreach($pertanyaan_list as $pertanyaan)
-                            <div class="flex flex-col md:flex-row md:items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-rose-200 transition-colors gap-4">
-                                <p class="text-sm font-bold text-slate-700 flex-1">{{ $index + 1 }}. {{ $pertanyaan }}</p>
-                                <div class="flex gap-2 shrink-0">
+                            <div class="bg-white p-3 rounded border border-gray-200 shadow-sm">
+                                <p class="text-sm font-medium text-gray-800 mb-2">{{ $index + 1 }}. {{ $pertanyaan }}</p>
+                                <div class="flex gap-2">
                                     @foreach([0, 1, 2] as $nilai)
-                                    <div class="relative">
-                                        <input type="radio" name="scores[{{ $index }}]" id="q_{{ $index }}_v_{{ $nilai }}" value="{{ $nilai }}" class="score-radio peer sr-only" required>
-                                        <label for="q_{{ $index }}_v_{{ $nilai }}" class="flex items-center justify-center w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-500 font-black cursor-pointer transition-all hover:bg-slate-100">
-                                            {{ $nilai }}
-                                        </label>
+                                    <div class="flex-1">
+                                        <input type="radio" name="scores[{{ $index }}]" id="s_{{ $index }}_{{ $nilai }}" value="{{ $nilai }}" class="radio-score sr-only" required>
+                                        <label for="s_{{ $index }}_{{ $nilai }}" class="block text-center border border-gray-300 rounded py-1.5 text-sm font-bold text-gray-500 cursor-pointer transition-colors">{{ $nilai }}</label>
                                     </div>
                                     @endforeach
                                 </div>
@@ -134,48 +73,40 @@
                     </div>
                     @endforeach
                 </div>
+
+                <div>
+                    <h3 class="font-bold text-blue-900 border-b-2 border-blue-100 pb-2 mb-4">Catatan Kualitatif</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Kelebihan:</label>
+                            <input type="text" name="nurse_strengths" class="w-full border border-gray-300 p-2.5 rounded shadow-sm outline-none focus:border-blue-500 text-sm font-medium" placeholder="Cth: Edukasi sudah jelas">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Kekurangan:</label>
+                            <input type="text" name="areas_of_improvement" class="w-full border border-gray-300 p-2.5 rounded shadow-sm outline-none focus:border-blue-500 text-sm font-medium" placeholder="Cth: Kurang cek pemahaman">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Saran / Tindak Lanjut:</label>
+                            <input type="text" name="action_plan" class="w-full border border-gray-300 p-2.5 rounded shadow-sm outline-none focus:border-blue-500 text-sm font-medium" required placeholder="Cth: Evaluasi teach-back">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Target Waktu (RTL):</label>
+                            <input type="date" name="target_date" class="w-full border border-gray-300 p-2.5 rounded shadow-sm outline-none focus:border-blue-500 text-sm font-medium" required>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+
+            <div class="bg-white p-4 border-t border-gray-200 sticky bottom-0 z-30 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+                <button type="submit" class="w-full bg-[#0056b3] hover:bg-blue-800 text-white font-bold text-lg py-3 rounded shadow transition-colors active:scale-95">
+                    SIMPAN
+                </button>
             </div>
-
-            <div class="glass-card p-6 md:p-8 rounded-[2rem] shadow-sm">
-                <div class="mb-6 border-b border-slate-100 pb-4">
-                    <h2 class="text-xl font-black text-slate-900 tracking-tight">B. Umpan Balik Kualitatif</h2>
-                    <p class="text-xs text-slate-500 font-medium mt-1">Catatan pembinaan berdasarkan observasi</p>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-xs font-black uppercase tracking-widest text-emerald-600 mb-2">Kekuatan Perawat</label>
-                        <textarea name="nurse_strengths" rows="3" class="w-full bg-slate-50 border border-slate-200 p-4 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500 transition-all font-bold text-slate-700 text-sm resize-none placeholder:font-medium placeholder:text-slate-400" placeholder="Contoh: Sangat empatik, bahasa mudah dipahami..."></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-black uppercase tracking-widest text-amber-600 mb-2">Area yang Perlu Ditingkatkan</label>
-                        <textarea name="areas_of_improvement" rows="3" class="w-full bg-slate-50 border border-slate-200 p-4 rounded-2xl outline-none focus:ring-2 focus:ring-amber-200 focus:border-amber-500 transition-all font-bold text-slate-700 text-sm resize-none placeholder:font-medium placeholder:text-slate-400" placeholder="Contoh: Lupa menggunakan kartu lifestyle saat awal edukasi..."></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <div class="glass-card p-6 md:p-8 rounded-[2rem] shadow-sm border-t-4 border-t-slate-800">
-                <div class="mb-6">
-                    <h2 class="text-xl font-black text-slate-900 tracking-tight">C. Rencana Tindak Lanjut (RTL)</h2>
-                    <p class="text-xs text-slate-500 font-medium mt-1">Kesepakatan perbaikan kompetensi edukasi</p>
-                </div>
-
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="md:col-span-2">
-                        <label class="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">Aksi / Tindak Lanjut</label>
-                        <input type="text" name="action_plan" class="w-full bg-slate-50 border border-slate-200 p-4 rounded-2xl outline-none focus:ring-2 focus:ring-slate-400 focus:border-slate-500 transition-all font-bold text-slate-700 text-sm" placeholder="Contoh: Mengulang simulasi edukasi diet dengan media..." required>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">Target Waktu</label>
-                        <input type="date" name="target_date" class="w-full bg-slate-50 border border-slate-200 p-4 rounded-2xl outline-none focus:ring-2 focus:ring-slate-400 focus:border-slate-500 transition-all font-bold text-slate-700 text-sm" required>
-                    </div>
-                </div>
-            </div>
-
-            <button type="submit" class="w-full bg-slate-900 hover:bg-rose-600 text-white font-black py-6 rounded-[2rem] shadow-md transition-all duration-300 text-sm md:text-base uppercase tracking-[0.2em]">
-                Finalisasi & Simpan Penilaian
-            </button>
         </form>
-    </main>
+
+    </div>
+
 </body>
 </html>

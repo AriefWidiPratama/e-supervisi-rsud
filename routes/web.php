@@ -36,12 +36,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/perawat/patient/add', [PerawatController::class, 'create'])->name('perawat.patient.add');
     Route::post('/perawat/patient/store', [PerawatController::class, 'store'])->name('perawat.patient.store');
     
-    // RUTE BARU: Fitur Hapus Pasien jika salah input
+    // Feature: Hapus Pasien jika salah input
     Route::delete('/perawat/patient/{id}', [PerawatController::class, 'destroy'])->name('perawat.patient.destroy');
 
     // Feature: Digital Lifestyle Card Data Entry
     Route::get('/perawat/education/{patient_id}', [EducationController::class, 'create'])->name('perawat.education.create');
     Route::post('/perawat/education/store', [EducationController::class, 'store'])->name('perawat.education.store');
+    
+    // Feature: Digital Lifestyle Card Data Entry
+    Route::get('/perawat/education/{patient_id}', [EducationController::class, 'create'])->name('perawat.education.create');
+    Route::post('/perawat/education/store', [EducationController::class, 'store'])->name('perawat.education.store');
+    
+    // RUTE CETAK: Blanko Kosong & Kartu Terisi
+    Route::get('/perawat/print-blank', [EducationController::class, 'printBlank'])->name('perawat.printBlank');
+    Route::get('/perawat/education/{education_id}/print', [EducationController::class, 'printCard'])->name('perawat.education.print');
 });
 
 /**
@@ -65,7 +73,7 @@ Route::middleware(['auth'])->group(function () {
     // Feature: Export Data Riset ke Excel/CSV
     Route::get('/supervisor/export', [SupervisorController::class, 'exportData'])->name('supervisor.export');
 
-    // RUTE BARU: Feature Manajemen Akun Perawat
+    // Feature: Manajemen Akun Perawat
     Route::get('/supervisor/nurses', [SupervisorController::class, 'manageNurses'])->name('supervisor.nurses');
     Route::post('/supervisor/nurses', [SupervisorController::class, 'storeNurse'])->name('supervisor.nurses.store');
 });
@@ -79,4 +87,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Feature: Halaman Khusus Antrean Supervisi
+    Route::get('/supervisor/pending', [SupervisorController::class, 'pendingEvaluations'])->name('supervisor.pending');
 require __DIR__.'/auth.php';
